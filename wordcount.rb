@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby -w
 
 class Buffer
-  def initialize(buffer_size_limit, &read_chunk)
-    @read_chunk = read_chunk
+  def initialize(buffer_size_limit, stream)
+    @stream = stream
     @buffer_size_limit = buffer_size_limit
     @buffer = ""
   end
@@ -25,8 +25,7 @@ class Buffer
 
   def ensure_length(len)
     if @buffer.empty? || (@buffer.size < len)
-      wanted = @buffer_size_limit - @buffer.size
-      next_chunk = @read_chunk.call(wanted)
+      next_chunk = @stream.read(@buffer_size_limit - @buffer.size)
       return false if (next_chunk.nil? || next_chunk.empty?)
       @buffer += next_chunk
     else
@@ -43,7 +42,7 @@ class WordCount
   def initialize(stream, string, buffer_size_limit=(1024 ** 2))
     raise ArgumentError, "empty search string" if string.empty?
     @string = string
-    @buffer = Buffer.new(buffer_size_limit, &stream.method(:read))
+    @buffer = Buffer.new(buffer_size_limit, stream)
   end
 
   def count_occurrences
