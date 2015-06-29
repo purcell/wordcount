@@ -51,4 +51,6 @@ class WordCount
   end
 end
 
-puts WordCount.new(STDIN, ARGV.first).count_occurrences
+if __FILE__ == $0
+  puts WordCount.new(STDIN, ARGV.first).count_occurrences
+end
