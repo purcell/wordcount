@@ -55,7 +55,7 @@ class WordCount
         occurrences += 1
       else
         # Throw away the part of the buffer we know can't contain part of the string
-        first_char_pos = first_possible_starting_pos
+        first_char_pos = first_possible_starting_position
         if first_char_pos
           @buffer.skip_to(first_char_pos)
         else
@@ -68,8 +68,8 @@ class WordCount
 
   private
 
-  def first_possible_starting_pos
-    ## Searching for foo
+  def first_possible_starting_position
+    ## Searching for "foo", which we know isn't fully in the buffer
     ##  0 1 2 3 4 5 6 7 8 9 | STREAM
     ##  x x x x x x x x f o | o
     @buffer.index(@string[0], @buffer.size - @string.size + 1)
