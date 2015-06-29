@@ -53,14 +53,11 @@ class WordCount
       if found_pos = @buffer.index(@string)
         @buffer.skip_to(found_pos + @string.size)
         occurrences += 1
-      else
+      elsif first_char_pos = first_possible_starting_position
         # Throw away the part of the buffer we know can't contain part of the string
-        first_char_pos = first_possible_starting_position
-        if first_char_pos
-          @buffer.skip_to(first_char_pos)
-        else
-          @buffer.skip_to_end
-        end
+        @buffer.skip_to(first_char_pos)
+      else
+        @buffer.skip_to_end
       end
     end
     occurrences
